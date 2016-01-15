@@ -25,7 +25,7 @@ lineReader.eachLine(inFile, function(line, last) {
    
 
 
-    previous = line;
+    previous = arr_line;
     first = false;
     if (last) {
         // or check if it's the last one
