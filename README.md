@@ -1,2 +1,3 @@
 # csvToHtml
-lala
+usage (first install node): 
+$ node csvToHtml.js
