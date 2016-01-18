@@ -1,5 +1,5 @@
 # csvToHtml
 Usage (first install node): 
 
-$npm install
-$node csvToHtml.js
+[1] $npm install
+[2] $node csvToHtml.js
