@@ -10,7 +10,7 @@
     "url": "https://github.com/dcharlaftis/csvToHtml.git"
   },
   "authors": [
-    "Dimitris Charlaftis"
+    "DotbyDot"
   ],
   "dependencies": {    
     "n-readlines": "^0.2.2"
