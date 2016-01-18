@@ -11,8 +11,8 @@
   },
   "authors": [
     "Dimitris Charlaftis"
-  ], 
-  "dependencies": {
-    "line-reader": ""     
+  ],
+  "dependencies": {    
+    "n-readlines": "^0.2.2"
   }
 }
