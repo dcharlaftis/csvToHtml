@@ -29,24 +29,24 @@ var line;
 var lineNumber = 0;
 
 //write html header
-var header = '<html><head><title>Template</title></head><body>'
+var header = '<uib-accordion>'
 writetoHtml(header);
 
 function stateChange(A, B, C, preA, preB, preC) {
     var result = [];
     if (A != preA) {
-        result.push([A, preA]);
-        result.push([B, preB]);
-        result.push([C, preC]);
+        result.push([A, preA, "A"]);
+        result.push([B, preB, "B"]);
+        result.push([C, preC, "C"]);
         return result;
     }
     if (B != preB) {
-        result.push([B, preB]);
-        result.push([C, preC]);
+        result.push([B, preB, "B"]);
+        result.push([C, preC, "C"]);
         return result;
     }
     if (C != preC) {
-        result.push([C, preC]);
+        result.push([C, preC, "C"]);
         return result;
     }
     return result;
@@ -56,7 +56,10 @@ function closeDivs(stateArray) {
     var result = '';
     for (var i = 0; i < stateArray.length; i++) {
         if (stateArray[i][1] != 'Null')
-            result += '</div>';
+            if (stateArray[i][2] === 'A')
+                result += '</uib-accordion-group>';
+            else
+                result += '</div>';
     }
     return result;
 
@@ -66,7 +69,10 @@ function openDivs(stateArray) {
     var result = '';
     for (var i = 0; i < stateArray.length; i++) {
         if (stateArray[i][0] != 'Null')
-            result += '<div id=\'' + stateArray[i][0] + '\'>';
+            if (stateArray[i][2] === 'A')
+                result += '<uib-accordion-group heading=\'' + stateArray[i][0] + '\'>';
+            else
+                result += '<div id=\'' + stateArray[i][0] + '\'>';
     }
     return result;
 }
@@ -82,12 +88,12 @@ function toCamelCase(str) {
 }
 
 function element(el_name, el_dependencies, el_type, el_values, el_mandatory) {
-    var result ='';
+    var result = '';
     var el_id = toCamelCase(el_name);
-    if (el_type==='string')
-        result = '<p>'+el_name+':<input type=\'text\' name=\''+el_id+'\'></p>';
+    if (el_type === 'string')
+        result = '<p>' + el_name + ':<input type=\'text\' name=\'' + el_id + '\'></p>';
     else
-        result = '<element id=\'' + el_id + '\'' + 'dependencies=\'' + el_dependencies + '\' type=\'' + el_type + '\' values = \'' + el_values + '\' mandatory = \''+el_mandatory +' \' ></element>';
+        result = '<element id=\'' + el_id + '\'' + 'dependencies=\'' + el_dependencies + '\' type=\'' + el_type + '\' values = \'' + el_values + '\' mandatory = \'' + el_mandatory + ' \' ></element>';
     return result;
 }
 
@@ -137,4 +143,4 @@ closingDivs = closeDivs(statechange);
 output += closingDivs;
 
 console.log('end of line reached');
-writetoHtml(output);
+writetoHtml(output + '</uib-accordion>');
