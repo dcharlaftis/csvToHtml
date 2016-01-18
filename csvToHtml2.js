@@ -54,7 +54,7 @@ function stateChange(A, B, C, preA, preB, preC) {
 
 function closeDivs(stateArray) {
     var result = '';
-    for (var i = 0; i < stateArray.length; i++) {
+    for (var i = stateArray.length-1; i >=0; i--) {
         if (stateArray[i][1] != 'Null')
             if (stateArray[i][2] === 'A')
                 result += '</uib-accordion-group>';
@@ -93,7 +93,11 @@ function element(el_name, el_dependencies, el_type, el_values, el_mandatory) {
     if (el_type === 'string')
         result = '<p>' + el_name + ':<input type=\'text\' name=\'' + el_id + '\'></p>';
     else
-        result = '<element id=\'' + el_id + '\'' + 'dependencies=\'' + el_dependencies + '\' type=\'' + el_type + '\' values = \'' + el_values + '\' mandatory = \'' + el_mandatory + ' \' ></element>';
+        result = '<element id=\'' + el_id + '\'' 
+    + 'dependencies=\'' + el_dependencies 
+    + '\' type=\'' + el_type 
+    + '\' values = \'' + el_values 
+    + ' \' ></element>';
     return result;
 }
 

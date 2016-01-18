@@ -12,7 +12,7 @@
   "authors": [
     "DotbyDot"
   ],
-  "dependencies": {    
+  "dependencies": {
     "n-readlines": "^0.2.2"
   }
 }
