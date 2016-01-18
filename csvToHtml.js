@@ -49,6 +49,10 @@ lineReader.eachLine(inFile, function(line, last) {
         if (last) {
             //Close divs for open states A and B . state C closes immediately after it opens
 
+            //close state C
+            if (!stateCclosed)
+                writetoHtml("</div>");
+
             //close state B
             if (!stateBclosed)
                 writetoHtml("</div>");
@@ -66,23 +70,35 @@ lineReader.eachLine(inFile, function(line, last) {
             }
 
             //stateB
-            if (((stateB != "Null") && (stateB != stateB_prev) && (stateA == stateA_prev))||
+            if (((stateB != "Null") && (stateB != stateB_prev)) ||
                 ((stateB != "Null") && (stateB == stateB_prev) && (stateA != stateA_prev))
+
             ) {
-                if (stateB_prev == "Null")
-                    writetoHtml("<div id='" + stateC + "'>");
-                else
-                    writetoHtml("</div><div id='" + stateC + "'>");
+                if (stateB_prev == "Null") {
+                    if (stateCclosed)
+                        writetoHtml("<div id='" + stateB + "'>");
+                    else {
+                        writetoHtml("</div><div id='" + stateB + "'>");
+                        stateCclosed = true;
+                    }
+                } else {
+                    if (stateCclosed)
+                        writetoHtml("</div><div id='" + stateB + "'>");
+                    else {
+                        writetoHtml("</div></div><div id='" + stateB + "'>");
+                        stateCclosed = true;
+                    }
+                }
 
-                stateCclosed = false;
+                stateBclosed = false;
 
-            } else if ((stateC == "Null") && (stateC != stateC_prev) && (stateB == stateB_prev)) {
+            } else if ((stateB == "Null") && (stateB != stateB_prev) && (stateA == stateA_prev)) {
                 writetoHtml("</div>");
-                stateCclosed = true;
+                stateBclosed = true;
             }
 
             //stateC
-            if (((stateC != "Null") && (stateC != stateC_prev) && (stateB == stateB_prev))||
+            if (((stateC != "Null") && (stateC != stateC_prev)) ||
                 ((stateC != "Null") && (stateC == stateC_prev) && (stateB != stateB_prev))
             ) {
                 if (stateC_prev == "Null")
@@ -98,7 +114,8 @@ lineReader.eachLine(inFile, function(line, last) {
             }
 
             //element name
-            writetoHtml("<div id='" + el_name + "', " + attributes_str + ">");
+            // writetoHtml("<div id='" + el_name + "', " + attributes_str + ">");
+            writetoHtml("<div id='" + el_name + "', >");
             writetoHtml("</div>");
         }
 
