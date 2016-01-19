@@ -54,7 +54,7 @@ function stateChange(A, B, C, preA, preB, preC) {
 
 function closeDivs(stateArray) {
     var result = '';
-    for (var i = stateArray.length-1; i >=0; i--) {
+    for (var i = stateArray.length - 1; i >= 0; i--) {
         if (stateArray[i][1] != 'Null')
             if (stateArray[i][2] === 'A')
                 result += '</uib-accordion-group>';
@@ -89,25 +89,36 @@ function toCamelCase(str) {
 
 function element(el_name, el_dependencies, el_type, el_values, el_mandatory) {
     var result = '',
-        mandatStr='';
+        mandatStr = '';
     var el_id = toCamelCase(el_name);
-    if (el_mandatory.substring(0, 3) ==='yes')
-        mandatStr += ' mandatory = \'true\'';
-    
-    //console.log ("ddff%sfff", el_mandatory.substring(0, 3) );
+    var el_val = el_values.replace(/[()]/g, "");
+    var el_val_arr = el_val.split(",");
 
-    if (el_type === 'string')
-        result = '<p>' + el_name + ':<input type=\'text\' name=\'' + el_id +  '\''+ mandatStr +' ></p>';
-    else if (el_type === 'boolean')
-        result = '<p>' + el_name + ':<input type=\'checkbox\' name=\'' + el_id + '\' value= \''+ el_id +'\''+ mandatStr +'></p>';   
-    else if (el_type === 'date') 
-        result = '<p>' + el_name + ':<input type=\'date\' name=\'' + el_id + '\''+ mandatStr +'></p>';  
-    else  
-        result = '<element id=\'' + el_id + '\'' 
-    + 'dependencies=\'' + el_dependencies 
-    + '\' type=\'' + el_type 
-    + '\' values = \'' + el_values 
-    + ' \' ></element>';
+    if (el_mandatory.substring(0, 3) === 'yes')
+        mandatStr += ' mandatory = \'true\'';
+
+    if (el_type === 'string') {
+        if (el_val.length > 0) {
+            result = '<p>' + el_name + '<select>';
+            for (var i = 0; i < el_val_arr.length; i++) {
+                if (el_val_arr[i].substring(0, 8) === 'Country['){
+                    var groupArr= el_val_arr[i].split(":");
+                    var groupOpt = groupArr[0].substring(8, groupArr[0].length-1);
+                    result += '<optgroup label =\''+ groupOpt + '\'>';
+                    result += '<option value =\'' + toCamelCase(groupArr[1]) + '\' >' + groupArr[1] + '</option>';
+                }
+                else
+                    result += '<option value =\'' + toCamelCase(el_val_arr[i]) + '\' >' + el_val_arr[i] + '</option>';
+            }
+            result += '</select></p>';
+        } else
+            result = '<p>' + el_name + ':<input type=\'text\' name=\'' + el_id + '\'' + mandatStr + ' ></p>';
+    } else if (el_type === 'boolean')
+        result = '<p>' + el_name + ':<input type=\'checkbox\' name=\'' + el_id + '\' value= \'' + el_id + '\'' + mandatStr + '></p>';
+    else if (el_type === 'date')
+        result = '<p>' + el_name + ':<input type=\'date\' name=\'' + el_id + '\'' + mandatStr + '></p>';
+    else
+        result = '<p><element id=\'' + el_id + '\'' + 'dependencies=\'' + el_dependencies + '\' type=\'' + el_type + '\' values = \'' + el_values + ' \' ></element></p>';
     return result;
 }
 
