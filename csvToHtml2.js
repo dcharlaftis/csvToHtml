@@ -88,11 +88,21 @@ function toCamelCase(str) {
 }
 
 function element(el_name, el_dependencies, el_type, el_values, el_mandatory) {
-    var result = '';
+    var result = '',
+        mandatStr='';
     var el_id = toCamelCase(el_name);
+    if (el_mandatory.substring(0, 3) ==='yes')
+        mandatStr += ' mandatory = \'true\'';
+    
+    //console.log ("ddff%sfff", el_mandatory.substring(0, 3) );
+
     if (el_type === 'string')
-        result = '<p>' + el_name + ':<input type=\'text\' name=\'' + el_id + '\'></p>';
-    else
+        result = '<p>' + el_name + ':<input type=\'text\' name=\'' + el_id +  '\''+ mandatStr +' ></p>';
+    else if (el_type === 'boolean')
+        result = '<p>' + el_name + ':<input type=\'checkbox\' name=\'' + el_id + '\' value= \''+ el_id +'\''+ mandatStr +'></p>';   
+    else if (el_type === 'date') 
+        result = '<p>' + el_name + ':<input type=\'date\' name=\'' + el_id + '\''+ mandatStr +'></p>';  
+    else  
         result = '<element id=\'' + el_id + '\'' 
     + 'dependencies=\'' + el_dependencies 
     + '\' type=\'' + el_type 
@@ -122,7 +132,7 @@ while (line = liner.next()) {
 
 
     statechange = stateChange(stateA, stateB, stateC, stateA_prev, stateB_prev, stateC_prev);
-    console.log('-->', stateA, stateB, stateC, statechange);
+    //console.log('-->', stateA, stateB, stateC, statechange);
 
     closingDivs = closeDivs(statechange);
     output += closingDivs;
@@ -141,10 +151,10 @@ while (line = liner.next()) {
 }
 
 statechange = stateChange('Null', 'Null', 'Null', stateA_prev, stateB_prev, stateC_prev);
-console.log('-->', stateA, stateB, stateC, statechange);
+//console.log('-->', stateA, stateB, stateC, statechange);
 
 closingDivs = closeDivs(statechange);
 output += closingDivs;
 
-console.log('end of line reached');
+//console.log('end of line reached');
 writetoHtml(output + '</uib-accordion>');
